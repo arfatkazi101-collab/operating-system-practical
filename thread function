@@ -1,0 +1,14 @@
+from threading import Thread
+import time
+
+def display():
+    for i in range(5):
+        print("Thread is running", i + 1)
+        time.sleep(1)
+
+t = Thread(target=display)
+
+t.start()
+t.join()
+
+print("Main Thread Finished")
