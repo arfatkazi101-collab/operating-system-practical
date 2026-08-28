@@ -1,0 +1,31 @@
+from threading import Thread
+import time
+
+def work():
+    time.sleep(2)
+
+# Sequential Execution
+start = time.time()
+
+work()
+work()
+
+end = time.time()
+
+print("Sequential Time:", end - start)
+
+# Threaded Execution
+start = time.time()
+
+t1 = Thread(target=work)
+t2 = Thread(target=work)
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+end = time.time()
+
+print("Thread Time:", end - start)
