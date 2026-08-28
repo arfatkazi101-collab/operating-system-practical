@@ -1,0 +1,23 @@
+from threading import Thread
+import time
+
+def task1():
+    print("Task 1 Started")
+    time.sleep(2)
+    print("Task 1 Finished")
+
+def task2():
+    print("Task 2 Started")
+    time.sleep(1)
+    print("Task 2 Finished")
+
+t1 = Thread(target=task1)
+t2 = Thread(target=task2)
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+print("Both Threads Completed")
