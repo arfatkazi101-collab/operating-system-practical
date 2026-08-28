@@ -1,0 +1,51 @@
+from multiprocessing import Process, Value, Semaphore
+import time
+
+
+def producer(item, empty, full):
+    for i in range(1, 6):
+        empty.acquire()
+
+        item.value = i
+        print("Produced:", i, flush=True)
+
+        full.release()
+        time.sleep(0.5)
+
+
+def consumer(item, empty, full):
+    for i in range(5):
+        full.acquire()
+
+        value = item.value
+        print("Consumed:", value, flush=True)
+
+        empty.release()
+        time.sleep(0.5)
+
+
+if _name_ == "_main_":
+
+    item = Value('i', 0)
+
+    empty = Semaphore(1)
+    full = Semaphore(0)
+
+    p1 = Process(
+        target=producer,
+        args=(item, empty, full)
+    )
+
+    p2 = Process(
+        target=consumer,
+        args=(item, empty, full)
+    )
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Program completed", flush=True)
+    p2.join()
